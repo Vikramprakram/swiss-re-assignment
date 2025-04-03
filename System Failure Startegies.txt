@@ -1,0 +1,26 @@
+Curl for the service A, which will communicate to service B
+curl --location 'http://localhost:8080/api/serviceA/order' \
+--header 'Content-Type: application/json' \
+--data '{
+    "orderId": 123,
+    "item" : "Pen"
+}'
+Response:
+status 200
+Order processed successfully.
+
+1.	Network communication-issues between Service A and Service B 
+		In Microservices failures can arise from various reasons such as service downtime, high latency, or network instability etc.
+		If Service B Being Temporarily Unreachable : we can handle this failure using <i> Resilience4j Circuit Breaker and <ii> Fallback Logic
+		If Connection to Service B Timing Out or Being Lost : We can use Time Limitter and retries ( ideally 3 retries attempt provided)
+		
+2.	Service A crashing while processing a User Request
+		We need to make sure that Service A uses transactions to ensure atomicity. If the transaction is not committed, all changes should be rolled back.
+		Implement reconciliation mechanisms and duplicate detection to handle inconsistencies.
+		We need to have proper Logging and Monitoring of the application using Application Logs and Audit Logs. For Monitoring we can use cloud watch etc.
+		If we are on cloud we should have Automatic scaling and recovery enabled so that one system/instance crashes it should be up quickly with minimun
+		and no configuration changes from external party.
+		
+
+
+
